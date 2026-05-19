@@ -18,3 +18,11 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::middleware(['auth', 'admin'])->group(function () {
+
+    Route::get('/dashboard-admin', function () {
+        return view('dashboard');
+    });
+
+});
