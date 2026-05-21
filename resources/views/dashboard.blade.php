@@ -28,9 +28,15 @@
         </div>
 
         <div class="rounded-lg border border-library-line bg-library-ink p-5 text-library-paper shadow-sm shadow-library-line/40 sm:col-span-2 xl:col-span-1">
-            <p class="text-sm font-semibold text-library-brass">Mode Admin</p>
-            <p class="mt-3 text-2xl font-bold">Katalog Aktif</p>
-            <p class="mt-2 text-sm text-library-paper/75">Akun ini dapat menambah, mengedit, dan menghapus data buku perpustakaan.</p>
+            @if (Auth::user()?->role === 'admin')
+                <p class="text-sm font-semibold text-library-brass">Mode Admin</p>
+                <p class="mt-3 text-2xl font-bold">Katalog Aktif</p>
+                <p class="mt-2 text-sm text-library-paper/75">Akun ini dapat menambah, mengedit, dan menghapus data buku perpustakaan.</p>
+            @else
+                <p class="text-sm font-semibold text-library-brass">Mode Pengguna</p>
+                <p class="mt-3 text-2xl font-bold">Jelajahi Katalog</p>
+                <p class="mt-2 text-sm text-library-paper/75">Telusuri koleksi buku perpustakaan dan lihat detail informasi setiap buku.</p>
+            @endif
         </div>
     </section>
 
@@ -42,11 +48,9 @@
                     <h2 class="mt-1 text-lg font-bold text-library-ink">Buku Terbaru</h2>
                 </div>
 
-                @if (Auth::user()?->role === 'admin')
-                    <a href="{{ route('books.index') }}" class="inline-flex items-center justify-center rounded-md border border-library-line bg-library-paper px-4 py-2 text-sm font-semibold text-library-ink transition hover:bg-library-canvas focus:outline-none focus:ring-2 focus:ring-library-brass">
-                        Buka Katalog
-                    </a>
-                @endif
+                <a href="{{ Auth::user()?->role === 'admin' ? route('books.index') : route('catalog.index') }}" class="inline-flex items-center justify-center rounded-md border border-library-line bg-library-paper px-4 py-2 text-sm font-semibold text-library-ink transition hover:bg-library-canvas focus:outline-none focus:ring-2 focus:ring-library-brass">
+                    Buka Katalog
+                </a>
             </div>
 
             <div class="mt-5 divide-y divide-library-line">
@@ -97,21 +101,39 @@
 
     <section class="mt-6 grid gap-4 lg:grid-cols-3">
         <div class="rounded-lg border border-library-line bg-library-paper p-5 shadow-sm shadow-library-line/40 lg:col-span-2">
-            <h2 class="text-lg font-bold text-library-ink">Alur Kerja Admin</h2>
-            <div class="mt-5 grid gap-3 sm:grid-cols-3">
-                <div class="rounded-lg bg-library-canvas p-4 ring-1 ring-library-line">
-                    <p class="text-sm font-bold text-library-ink">1. Tambah Buku</p>
-                    <p class="mt-2 text-sm text-library-muted">Lengkapi judul, penulis, dan kategori.</p>
+            @if (Auth::user()?->role === 'admin')
+                <h2 class="text-lg font-bold text-library-ink">Alur Kerja Admin</h2>
+                <div class="mt-5 grid gap-3 sm:grid-cols-3">
+                    <div class="rounded-lg bg-library-canvas p-4 ring-1 ring-library-line">
+                        <p class="text-sm font-bold text-library-ink">1. Tambah Buku</p>
+                        <p class="mt-2 text-sm text-library-muted">Lengkapi judul, penulis, dan kategori.</p>
+                    </div>
+                    <div class="rounded-lg bg-library-canvas p-4 ring-1 ring-library-line">
+                        <p class="text-sm font-bold text-library-ink">2. Cek Katalog</p>
+                        <p class="mt-2 text-sm text-library-muted">Pastikan data tampil sebagai kartu buku.</p>
+                    </div>
+                    <div class="rounded-lg bg-library-canvas p-4 ring-1 ring-library-line">
+                        <p class="text-sm font-bold text-library-ink">3. Perbarui Data</p>
+                        <p class="mt-2 text-sm text-library-muted">Edit atau hapus data jika ada koreksi.</p>
+                    </div>
                 </div>
-                <div class="rounded-lg bg-library-canvas p-4 ring-1 ring-library-line">
-                    <p class="text-sm font-bold text-library-ink">2. Cek Katalog</p>
-                    <p class="mt-2 text-sm text-library-muted">Pastikan data tampil sebagai kartu buku.</p>
+            @else
+                <h2 class="text-lg font-bold text-library-ink">Panduan Pengguna</h2>
+                <div class="mt-5 grid gap-3 sm:grid-cols-3">
+                    <div class="rounded-lg bg-library-canvas p-4 ring-1 ring-library-line">
+                        <p class="text-sm font-bold text-library-ink">1. Buka Katalog</p>
+                        <p class="mt-2 text-sm text-library-muted">Lihat daftar seluruh koleksi buku perpustakaan.</p>
+                    </div>
+                    <div class="rounded-lg bg-library-canvas p-4 ring-1 ring-library-line">
+                        <p class="text-sm font-bold text-library-ink">2. Cari Buku</p>
+                        <p class="mt-2 text-sm text-library-muted">Temukan buku berdasarkan judul atau penulis.</p>
+                    </div>
+                    <div class="rounded-lg bg-library-canvas p-4 ring-1 ring-library-line">
+                        <p class="text-sm font-bold text-library-ink">3. Lihat Detail</p>
+                        <p class="mt-2 text-sm text-library-muted">Klik kartu buku untuk melihat informasi lengkap.</p>
+                    </div>
                 </div>
-                <div class="rounded-lg bg-library-canvas p-4 ring-1 ring-library-line">
-                    <p class="text-sm font-bold text-library-ink">3. Perbarui Data</p>
-                    <p class="mt-2 text-sm text-library-muted">Edit atau hapus data jika ada koreksi.</p>
-                </div>
-            </div>
+            @endif
         </div>
 
         <div class="rounded-lg border border-library-line bg-library-paper p-5 shadow-sm shadow-library-line/40">
@@ -124,6 +146,11 @@
                     </a>
                     <a href="{{ route('books.index') }}" class="flex items-center justify-between rounded-md border border-library-line bg-library-canvas px-4 py-3 text-sm font-semibold text-library-ink transition hover:bg-library-paper">
                         <span>Kelola Katalog</span>
+                        <span>→</span>
+                    </a>
+                @else
+                    <a href="{{ route('catalog.index') }}" class="flex items-center justify-between rounded-md bg-library-moss px-4 py-3 text-sm font-semibold text-library-paper transition hover:bg-library-ink">
+                        <span>Lihat Katalog</span>
                         <span>→</span>
                     </a>
                 @endif

@@ -1,28 +1,28 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
+        <div>
+            <p class="text-sm font-semibold uppercase tracking-wide text-library-moss">Pengaturan</p>
+            <h1 class="mt-1 text-2xl font-bold text-library-ink">Profil Akun</h1>
+            <p class="mt-1 text-sm text-library-muted">Kelola informasi akun, ubah kata sandi, atau hapus akun Anda.</p>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
+    <div class="space-y-5">
+        <div class="rounded-lg border border-library-line bg-library-paper p-5 shadow-sm shadow-library-line/40 sm:p-6">
+            <div class="max-w-xl">
+                @include('profile.partials.update-profile-information-form')
             </div>
+        </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
+        <div class="rounded-lg border border-library-line bg-library-paper p-5 shadow-sm shadow-library-line/40 sm:p-6">
+            <div class="max-w-xl">
+                @include('profile.partials.update-password-form')
             </div>
+        </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
+        <div class="rounded-lg border border-library-line bg-library-paper p-5 shadow-sm shadow-library-line/40 sm:p-6">
+            <div class="max-w-xl">
+                @include('profile.partials.delete-user-form')
             </div>
         </div>
     </div>

@@ -65,11 +65,9 @@
                 Dashboard
             </x-responsive-nav-link>
 
-            @if ($isAdmin)
-                <x-responsive-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')">
-                    Katalog Buku
-                </x-responsive-nav-link>
-            @endif
+            <x-responsive-nav-link :href="$isAdmin ? route('books.index') : route('catalog.index')" :active="request()->routeIs('books.*') || request()->routeIs('catalog.*')">
+                Katalog Buku
+            </x-responsive-nav-link>
         </div>
 
         <div class="border-t border-library-line px-4 py-4">

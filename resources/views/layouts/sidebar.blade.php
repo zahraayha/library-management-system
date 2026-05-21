@@ -7,15 +7,12 @@
             'href' => route('dashboard'),
             'active' => request()->routeIs('dashboard') || request()->routeIs('dashboard.admin'),
         ],
-    ];
-
-    if ($isAdmin) {
-        $items[] = [
+        [
             'label' => 'Katalog Buku',
-            'href' => route('books.index'),
-            'active' => request()->routeIs('books.*'),
-        ];
-    }
+            'href' => $isAdmin ? route('books.index') : route('catalog.index'),
+            'active' => request()->routeIs('books.*') || request()->routeIs('catalog.*'),
+        ],
+    ];
 @endphp
 
 <aside class="sticky top-24 hidden h-[calc(100vh-7rem)] w-64 shrink-0 rounded-lg border border-library-line bg-library-paper p-4 shadow-sm shadow-library-line/40 lg:block">
