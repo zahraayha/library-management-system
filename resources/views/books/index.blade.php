@@ -1,76 +1,58 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Daftar Buku</title>
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <p class="text-sm font-semibold uppercase tracking-wide text-library-moss">Katalog Buku</p>
+                <h1 class="mt-1 text-2xl font-bold text-library-ink">Kelola Data Buku</h1>
+                <p class="mt-1 text-sm text-library-muted">{{ $books->count() }} buku tersedia di database.</p>
+            </div>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-
-<body class="bg-light">
-<nav class="navbar navbar-dark bg-dark mb-4">
-    <div class="container">
-        <a class="navbar-brand" href="/dashboard">
-            Perpustakaan
-        </a>
-
-        <div>
-            <a href="/dashboard" class="btn btn-light btn-sm">
-                Dashboard
-            </a>
-
-            <a href="/books" class="btn btn-warning btn-sm">
-                Books
+            <a href="{{ route('books.create') }}" class="inline-flex items-center justify-center rounded-md bg-library-moss px-4 py-2 text-sm font-semibold text-library-paper shadow-sm transition hover:bg-library-ink focus:outline-none focus:ring-2 focus:ring-library-brass">
+                Tambah Buku
             </a>
         </div>
-    </div>
-</nav>
+    </x-slot>
 
-<div class="container mt-5">
+    @if ($books->isEmpty())
+        <section class="rounded-lg border border-dashed border-library-line bg-library-paper p-8 text-center shadow-sm shadow-library-line/40">
+            <h2 class="text-lg font-bold text-library-ink">Belum ada buku</h2>
+            <p class="mt-2 text-sm text-library-muted">Tambahkan buku pertama agar katalog mulai terisi.</p>
+            <a href="{{ route('books.create') }}" class="mt-5 inline-flex items-center justify-center rounded-md bg-library-moss px-4 py-2 text-sm font-semibold text-library-paper shadow-sm transition hover:bg-library-ink focus:outline-none focus:ring-2 focus:ring-library-brass">
+                Tambah Buku
+            </a>
+        </section>
+    @else
+        <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            @foreach ($books as $book)
+                <article class="flex min-h-56 flex-col rounded-lg border border-library-line bg-library-paper p-5 shadow-sm shadow-library-line/40 transition hover:-translate-y-0.5 hover:border-library-brass hover:shadow-md">
+                    <div class="flex items-start justify-between gap-3">
+                        <span class="rounded-full bg-library-canvas px-3 py-1 text-xs font-semibold text-library-moss ring-1 ring-library-line">
+                            {{ $book->category?->name ?? 'Tanpa Kategori' }}
+                        </span>
+                        <span class="text-xs font-medium text-library-muted">#{{ $loop->iteration }}</span>
+                    </div>
 
-    <h1 class="mb-4 text-center">Daftar Buku</h1>
+                    <div class="mt-5 flex-1">
+                        <h2 class="text-lg font-bold leading-snug text-library-ink">{{ $book->title }}</h2>
+                        <p class="mt-2 text-sm font-medium text-library-muted">{{ $book->author }}</p>
+                    </div>
 
-    <a href="/books/create" class="btn btn-primary mb-3">
-    Tambah Buku </a>
+                    <div class="mt-5 flex flex-col gap-2 sm:flex-row">
+                        <a href="{{ route('books.edit', $book) }}" class="inline-flex flex-1 items-center justify-center rounded-md border border-library-brass/50 bg-library-canvas px-3 py-2 text-sm font-semibold text-library-ink transition hover:border-library-brass hover:bg-library-brass/10 focus:outline-none focus:ring-2 focus:ring-library-brass">
+                            Edit
+                        </a>
 
-    <table class="table table-bordered table-striped table-hover bg-white">
-        <thead class="table-dark">
-            <tr>
-                <th>No</th>
-                <th>Judul Buku</th>
-                <th>Author</th>
-                <th>Category ID</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
+                        <form action="{{ route('books.destroy', $book) }}" method="POST" class="flex-1" onsubmit="return confirm('Hapus buku ini?')">
+                            @csrf
+                            @method('DELETE')
 
-        <tbody>
-            @foreach($books as $book)
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $book->title }}</td>
-                <td>{{ $book->author }}</td>
-                <td>{{ $book->category->name }}</td>
-                <td>
-                    <a href="/books/{{ $book->id }}/edit" class="btn btn-warning btn-sm">
-                        Edit
-                    </a>
-
-                    <form action="/books/{{ $book->id }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            Delete
-                        </button>
-                    </form>
-                </td>
-            </tr>
+                            <button type="submit" class="inline-flex w-full items-center justify-center rounded-md bg-library-brick px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-library-ink focus:outline-none focus:ring-2 focus:ring-library-brick">
+                                Hapus
+                            </button>
+                        </form>
+                    </div>
+                </article>
             @endforeach
-        </tbody>
-    </table>
-
-</div>
-
-</body>
-</html>
+        </section>
+    @endif
+</x-app-layout>

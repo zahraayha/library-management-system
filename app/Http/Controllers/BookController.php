@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -11,7 +13,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = \App\Models\Book::all();
+        $books = Book::with('category')->latest()->get();
 
         return view('books.index', compact('books'));
     }
@@ -20,7 +22,9 @@ class BookController extends Controller
      */
     public function create()
     {
-        return view('books.create');
+        $categories = Category::orderBy('name')->get();
+
+        return view('books.create', compact('categories'));
     }
 
     /**
@@ -28,7 +32,7 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        \App\Models\Book::create([
+        Book::create([
             'title' => $request->title,
             'author' => $request->author,
             'category_id' => $request->category_id,
@@ -50,9 +54,10 @@ class BookController extends Controller
      */
     public function edit(string $id)
     {
-        $book = \App\Models\Book::findOrFail($id);
+        $book = Book::findOrFail($id);
+        $categories = Category::orderBy('name')->get();
 
-        return view('books.edit', compact('book'));
+        return view('books.edit', compact('book', 'categories'));
     }
 
     /**
@@ -60,7 +65,7 @@ class BookController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $book = \App\Models\Book::findOrFail($id);
+        $book = Book::findOrFail($id);
 
         $book->update([
             'title' => $request->title,
@@ -75,7 +80,7 @@ class BookController extends Controller
      */
     public function destroy(string $id)
     {
-        $book = \App\Models\Book::findOrFail($id);
+        $book = Book::findOrFail($id);
 
         $book->delete();
 
