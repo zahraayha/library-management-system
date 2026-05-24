@@ -43,7 +43,9 @@ Route::middleware('auth')->group(function () {
         return view('catalog.index', compact('books'));
     })->name('catalog.index');
 
-    Route::get('/books/{book}', [BookController::class, 'show'])->name('books.show');
+    Route::get('/books/{book}', [BookController::class, 'show'])
+    ->whereNumber('book')
+    ->name('books.show');
 });
 
 require __DIR__.'/auth.php';
