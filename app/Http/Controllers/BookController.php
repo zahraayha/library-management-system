@@ -38,15 +38,15 @@ class BookController extends Controller
             'author'      => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
-            'stock'       => 'required|integer|min:0',
             'year'        => 'nullable|integer|min:1000|max:2099',
         ]);
 
         Book::create($request->all());
 
-        return redirect()->route('books.index')->with('success', 'Buku berhasil ditambahkan!');
+        return redirect()
+            ->route('books.index')
+            ->with('success', 'Buku berhasil ditambahkan!');
     }
-
     public function show(string $id)
     {
         $book = Book::with('category')->findOrFail($id);
@@ -67,7 +67,7 @@ class BookController extends Controller
             'author'      => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
-            'stock'       => 'required|integer|min:0',
+            'stock'       => 'nullable|integer|min:0',
             'year'        => 'nullable|integer|min:1000|max:2099',
         ]);
 
